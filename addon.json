@@ -4,6 +4,7 @@
 	"tags"		:	[ "fun", "realism" ],
 	"ignore"	:
 	[
+		"*.svn*"
 		"*.psd",
 		"*.vcproj",
 		"*.svn*",
