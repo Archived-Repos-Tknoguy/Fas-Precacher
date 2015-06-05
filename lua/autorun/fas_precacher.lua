@@ -11,7 +11,7 @@ function PrecacheDir( dir ) // Recursively adds everything in a directory to be 
 
     for k,v in pairs(files) do
         local fname = string.lower(dir..v)
-                print(fname)
+                print("Precaching: "..fname)
         local ismodel = -1
         local ismaterial = -1
         local isparticle = -1
@@ -45,16 +45,18 @@ function PrecacheDir( dir ) // Recursively adds everything in a directory to be 
 end
 
 if SERVER then
+-- Send this LUA file to clients
 AddCSLuaFile()
 end
 
--- below is the part where it does stuff. it checks for client status and if so precaches all directories using the script above!
 function PrecacheAll()
 if SERVER then
--- Below displays a message to the server console and sends the LUA file to clients (in case they don't have it)
+-- Displays a message to the server console that the precacher only works on clients
 print("The FA:S precacher has no use on a server console! However, clients will still precache files.\n");
 elseif CLIENT then
--- below precaches all required directories.. I'm still testing code to see if all of these are needed.
+-- "PrecacheDir()" is what precaches individual directiores
+
+-- Materials
 PrecacheDir("materials/models/weapons/shells/")
 PrecacheDir("materials/models/weapons/v_models/")
 PrecacheDir("materials/models/weapons/v_models/accesories/")
@@ -76,11 +78,15 @@ PrecacheDir("materials/models/weapons/w_models/bizon/")
 PrecacheDir("materials/models/weapons/world/accessories/")
 PrecacheDir("materials/models/weapons/world/rifles/rk95/")
 PrecacheDir("materials/models/weapons/world/rifles/sks/")
+
+-- Models
 PrecacheDir("models/weapons/view/pistols/")
 PrecacheDir("models/weapons/view/rifles/")
 PrecacheDir("models/weapons/view/shotguns/")
 PrecacheDir("models/weapons/view/smgs/")
 PrecacheDir("models/weapons/view/support/")
+
+-- Sounds
 PrecacheDir("sound/weapons/ak47/")
 PrecacheDir("sound/weapons/ak74/")
 PrecacheDir("sound/weapons/bizon/")
@@ -101,5 +107,7 @@ PrecacheDir("sound/weapons/sks/")
 PrecacheDir("sound/weapons/sterling/")
 end
 end
+-- Run the precaching script
 PrecacheAll()
+-- Add the console command to manually run the script.
 concommand.Add( "reprecache_fas", PrecacheAll )
